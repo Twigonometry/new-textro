@@ -1,3 +1,5 @@
+from random import randint
+
 class Player:
     """class to represent player and their stats"""
 
@@ -67,9 +69,24 @@ class Player:
         """let user set stats manually"""
         print("Set your stats below")
 
+    def roll_4d6(self):
+        """roll 4d6, drop the lowest. if total < 8, reroll"""
+        rolls = []
+        for i in range(4):
+            rolls.append(randint(1,6))
+        print("4 rolls: ", rolls)
+        rolls.remove(min(rolls))
+        print("3 highest: ", rolls)
+        if sum(rolls) < 8:
+            print("Too low, reroll!")
+            rolls = self.roll_4d6()
+        return rolls
+
     def set_stats_random(self):
         """roll for user stats"""
         print("Rolling for stats...")
+        roll1 = self.roll_4d6()
+        print("First roll: ", roll1)
 
     def stats_choice(self):
         """set player stats"""
