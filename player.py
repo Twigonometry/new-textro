@@ -1,7 +1,16 @@
 class Player:
     """class to represent player and their stats"""
 
-    stats = {}
+    #stats dictionary
+    #1: strength, 2: dexterity, 3: constitution, 4: intelligence, 5: wisdom, 6: charisma
+    stats = {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0
+    }
 
     #costs of assigning each score
     score_costs = {
@@ -49,20 +58,33 @@ class Player:
         30: 10
     }
 
-    def generate_stats(self):
-        """allow player to generate stats using budget"""
-        print("Generate stats")
+    def display_costs(self):
+        print("Costs for each ability score:")
+        for score in self.score_costs:
+            print(score + ": " + str(self.score_costs[score]))
 
-    def set_stats(self, stats_dict):
+    def set_stats_manual(self):
+        """let user set stats manually"""
+        print("Set your stats below")
+
+    def set_stats_random(self):
+        """roll for user stats"""
+        print("Rolling for stats...")
+
+    def stats_choice(self):
         """set player stats"""
-        print("Set stats")
+        print("Here you can assign your ability scores")
+        method = ""
+        while method != "1" and method != "2":
+            method = input("1. Assign manually\n2. Assign randomly\n")
+        if method == "1":
+            self.set_stats_manual()
+        else:
+            self.set_stats_random()
 
     def __init__(self):
         """constructor"""
         super().__init__()
 
-        #get user to select stats
-        self.generate_stats()
-
-        #update stats
-        self.set_stats({"test":"test"})
+        #create user stats
+        self.stats_choice()
