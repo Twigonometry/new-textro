@@ -5,13 +5,16 @@ class Player:
 
     #stats dictionary
     #1: strength, 2: dexterity, 3: constitution, 4: intelligence, 5: wisdom, 6: charisma
-    stats = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0,
-        "5": 0,
-        "6": 0
+    stats = {}
+
+    #names for stats, by number
+    stats_name_map = {
+        1: "STR",
+        2: "DEX",
+        3: "CON",
+        4: "INT",
+        5: "WIS",
+        6: "CHA"
     }
 
     #costs of assigning each score
@@ -74,19 +77,20 @@ class Player:
         rolls = []
         for i in range(4):
             rolls.append(randint(1,6))
-        print("4 rolls: ", rolls)
+        #print("4 rolls: ", rolls)
         rolls.remove(min(rolls))
-        print("3 highest: ", rolls)
+        #print("3 highest: ", rolls)
         if sum(rolls) < 8:
-            print("Too low, reroll!")
+            #print("Too low, reroll!")
             rolls = self.roll_4d6()
         return rolls
 
     def set_stats_random(self):
         """roll for user stats"""
         print("Rolling for stats...")
-        roll1 = self.roll_4d6()
-        print("First roll: ", roll1)
+        for i in range(1, 7):
+            self.stats[i] = sum(self.roll_4d6())
+            print(self.stats_name_map[i] + ": " + str(self.stats[i]))
 
     def stats_choice(self):
         """set player stats"""
