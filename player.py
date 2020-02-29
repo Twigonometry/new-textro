@@ -6,7 +6,50 @@ class Player:
 
     #stats dictionary
     #1: strength, 2: dexterity, 3: constitution, 4: intelligence, 5: wisdom, 6: charisma
-    stats = {}
+    stats = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0
+    }
+
+    #skills dictionaries for each stat. boolean value represents whether player is trained in skill
+    str_skills = {
+        "MELEE": False,
+        "CLIMBING": False
+    }
+
+    dex_skills = {
+        "RANGED": False,
+        "STEALTH": False
+    }
+
+    int_skills = {
+        "INVESTIGATION": False,
+        "HISTORY": False
+    }
+
+    wis_skills = {
+        "SURVIVAL": False,
+        "INSIGHT": False,
+        "PERCEPTION": False,
+        "MEDICINE": False
+    }
+
+    cha_skills = {
+        "INTIMIDATION": False,
+        "DECEPTION": False,
+        "PERSUASION": False,
+        "PERFORMANCE": False
+    }
+
+    #other statistics
+    health = 0
+    disease_resistance = 0
+    speed = 0
+    carry_cap = 0
 
     def set_stats_manual(self):
         """let user set stats manually. if user uses up all their budget, set remaining stats to 8"""
@@ -59,14 +102,16 @@ class Player:
     def roll_4d6(self):
         """roll 4d6, drop the lowest. if total < 8, reroll"""
         rolls = []
+
+        #roll die
         for i in range(4):
             rolls.append(randint(1,6))
-        #print("4 rolls: ", rolls)
+
+        #drop lowest and reroll
         rolls.remove(min(rolls))
-        #print("3 highest: ", rolls)
         if sum(rolls) < 8:
-            #print("Too low, reroll!")
             rolls = self.roll_4d6()
+            
         return rolls
 
     def set_stats_random(self):
