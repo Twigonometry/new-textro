@@ -11,9 +11,12 @@ If there are any issues with imports (for example, modules in the NPCs folder no
 
 Alternatively, try adding the following code to the top of the file:
 * For problems with imports in the same directory
+
     > import os,sys
     > sys.path.append(os.path.join(os.path.dirname(\_\_file__)))
+
 * For problems with imports in the parent directory
+
     > import os,sys,inspect
     > currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     > parentdir = os.path.dirname(currentdir)

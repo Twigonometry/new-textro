@@ -84,9 +84,7 @@ class Player:
                     break
         
         if len(self.abils) == 6:
-            print("\nAbility scores:")
-            for i in range(1, 7):
-                print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
+            self.display_abils
 
     def roll_4d6(self):
         """roll 4d6, drop the lowest. if total < 8, reroll"""
@@ -111,6 +109,11 @@ class Player:
             self.abils[i] = sum(self.roll_4d6())
             print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
 
+    def display_abils(self):
+        print("\nAbility scores:")
+        for i in range(1, 7):
+            print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
+
     def display_skills(self):
         for key in self.skills:
             abil_category = utils.skills_category_map[key]
@@ -122,6 +125,10 @@ class Player:
                 modifier = str(utils.score_mods[self.abils[abil_category]])
 
             print(key + ":= Modifier: " + modifier)
+
+    def display_stats(self):
+        self.display_abils()
+        self.display_skills()
 
     def pick_trained_skills(self):
         print("\nPick two trained skills")
