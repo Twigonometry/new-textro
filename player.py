@@ -78,8 +78,10 @@ class Player:
         while len(self.stats) < 6:
             if budget == 0:
                 #iterate over keys 1 to 6, if no value present set to 8
-                print("No budget left, setting remaining stats to 8")
-                break
+                print("\nNo budget left, setting remaining stats to 8")
+                for i in range(1, 7):
+                    if not i in self.stats.keys():
+                        self.stats[i] = 8
             else:
                 print("\nBudget remaining: ", budget)
 
@@ -103,7 +105,7 @@ class Player:
                             print("Enter an integer between 8 and 15\n")
                     stat_cost = self.score_costs[stat_value]
                     if stat_cost <= budget:
-                        self.stats[stat_choice] = stat_cost
+                        self.stats[stat_choice] = stat_value
                         budget -= stat_cost
                 elif stat_choice == 7:
                     self.display_costs()
@@ -111,7 +113,7 @@ class Player:
                     break
         
         if len(self.stats) == 6:
-            print("Stats:")
+            print("\nStats:")
             for i in range(1, 7):
                 print(self.stats_name_map[i] + ": " + str(self.stats[i]))
 
