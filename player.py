@@ -67,6 +67,7 @@ class Player:
         print("Costs for each ability score:")
         for score in self.score_costs:
             print(str(score) + ": " + str(self.score_costs[score]))
+            print()
 
     def set_stats_manual(self):
         """let user set stats manually. if user uses up all their budget, set remaining stats to 8"""
@@ -80,15 +81,15 @@ class Player:
                 print("No budget left, setting remaining stats to 8")
                 break
             else:
-                print("Budget remaining: ", budget)
+                print("\nBudget remaining: ", budget)
 
                 #input validation
                 stat_choice = 0
-                while stat_choice < 1 or stat_choice > 7:
+                while stat_choice < 1 or stat_choice > 8:
                     try:
-                        stat_choice = int(input("1. Set Strength\n2. Set Dexterity\n3. Set Constitution\n4. Set Intelligence\n5. Set Wisdom\n6. Set Charisma\n7. View point costs\n"))
+                        stat_choice = int(input("1. Set Strength\n2. Set Dexterity\n3. Set Constitution\n4. Set Intelligence\n5. Set Wisdom\n6. Set Charisma\n7. View point costs\n8. Quit\n"))
                     except:
-                        print("Enter an integer between 1 and 7\n")
+                        print("Enter an integer between 1 and 8\n")
                 
                 #assigning stat value
                 if stat_choice in self.stats.keys():
@@ -97,19 +98,22 @@ class Player:
                     stat_value = 0
                     while stat_value < 8 or stat_value > 15:
                         try:
-                            stat_value = int(input("Assign a score between 8 & 15\n"))
+                            stat_value = int(input("\nAssign a " + self.stats_name_map[stat_choice] + " score between 8 & 15\n"))
                         except:
                             print("Enter an integer between 8 and 15\n")
                     stat_cost = self.score_costs[stat_value]
                     if stat_cost <= budget:
                         self.stats[stat_choice] = stat_cost
                         budget -= stat_cost
-                else:
+                elif stat_choice == 7:
                     self.display_costs()
+                else:
+                    break
         
-        print("Stats:")
-        for i in range(1, 7):
-            print(self.stats_name_map[i] + ": " + str(self.stats[i]))
+        if len(self.stats) == 6:
+            print("Stats:")
+            for i in range(1, 7):
+                print(self.stats_name_map[i] + ": " + str(self.stats[i]))
 
     def roll_4d6(self):
         """roll 4d6, drop the lowest. if total < 8, reroll"""
