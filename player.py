@@ -40,7 +40,7 @@ class Player:
     carry_cap = 0
 
     def set_abils_manual(self):
-        """let user set ability scores manually
+        """let user set ability scores manually;
         if user uses up all their budget, set remaining scores to 8"""
         budget = 27
         self.abils = {}

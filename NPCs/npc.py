@@ -25,5 +25,5 @@ class NPC:
     ranged_damage_bonus = 0
 
     def interact(self, player):
-        """method for interacting with player
+        """method for interacting with player;
         defines extra dialogue options and paths to combat/social/skill encounters"""

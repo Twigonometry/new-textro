@@ -1,4 +1,5 @@
 import enum
+from random import randint
 
 #names for abilities, by number
 abils_name_map = {
@@ -92,6 +93,31 @@ score_mods = {
     30: 10
 }
 
+def die_roll(n, m, **kwargs):
+    """roll an n-sided die m times;
+    kwargs can specify a single modifier to apply to all rolls
+    or an m-array of modifiers to apply in turn"""
+
+    rolls = []
+
+    #roll with single modifier applied to all rolls
+    if 'single_mod' in kwargs:
+        single_mod = kwargs.get('single_mod')
+        for i in range(m):
+            rolls.append(randint(1, n) + single_mod)
+
+    #roll with array of different modifiers
+    if 'mod_array' in kwargs:
+        mod_array = kwargs.get('mod_array')
+        if len(mod_array) != m:
+            print("Number of modifiers must equal number of dice")
+        else:
+            for mod in mod_array:
+                rolls.append(randint(1, n) + mod)
+
+    return rolls
+
+#enum for NPC hostility
 class HostilityLevel(enum.Enum):
     FRIENDLY = "FRIENDLY"
     NEUTRAL = "NEUTRAL"
@@ -101,3 +127,13 @@ def display_costs():
     print("\nCosts for each ability score:")
     for score in score_costs:
         print(str(score) + ": " + str(score_costs[score]))
+
+def main():
+    print("Gambling...")
+    print("1d6 + 1\n", die_roll(6, 1, single_mod=1))
+    print("3d20 + 3\n", die_roll(20, 3, single_mod=3))
+    print("4d8 with modifiers 1, 2, 3, 4\n", die_roll(8, 4, mod_array=[1, 2, 3, 4]))
+    print("2d4 with not enough mods!\n", die_roll(4, 2, mod_array=[1]))
+
+if __name__ == '__main__':
+    main()
