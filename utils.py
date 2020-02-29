@@ -1,3 +1,5 @@
+import enum
+
 #names for abilities, by number
 abils_name_map = {
     1: "Strength",
@@ -89,6 +91,11 @@ score_mods = {
     29: 9,
     30: 10
 }
+
+class HostilityLevel(enum.Enum):
+    FRIENDLY = "FRIENDLY"
+    NEUTRAL = "NEUTRAL"
+    HOSTILE = "HOSTILE"
 
 def display_costs():
     print("\nCosts for each ability score:")

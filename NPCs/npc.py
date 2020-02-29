@@ -12,6 +12,8 @@ class NPC:
     health = 0
     speed = 0
 
+    hostility = utils.HostilityLevel
+
     #combat attributes
     melee_attack_bonus = 0
     melee_damage_die = 0
@@ -22,6 +24,6 @@ class NPC:
     ranged_damage_die = 0
     ranged_damage_bonus = 0
 
-    def interact(player):
+    def interact(self, player):
         """method for interacting with player
         defines extra dialogue options and paths to combat/social/skill encounters"""
