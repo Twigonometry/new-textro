@@ -72,7 +72,7 @@ class NPC:
             print("\nRanged attacks:\n" + self.ranged_weapon_name 
             + " (" + str(rdd[1]) + "d" + str(rdd[0]) + rd_bonus + ", " + ra_bonus + " to hit)")
 
-    def introduce(self):
+    def introduce(self, quantity, location_type):
         """introduce the NPC in the story;
         description may vary based on current location of player;
         also asks player what their next action is"""
