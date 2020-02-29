@@ -2,6 +2,13 @@ import utils
 import player
 import npc
 import world_engine as world
+import enum
+
+class NextState(enum.Enum):
+    FINISHED = "FINISHED"
+    COMBAT = "COMBAT"
+    SOCIAL = "SOCIAL"
+    DEATH = "DEATH"
 
 class Encounter():
     main_player = None
@@ -9,6 +16,7 @@ class Encounter():
     #list of NPC objects
     npc_list = []
     npc_distances = []
+    min_distance = 0
 
     location = world.LocationType
 
@@ -41,6 +49,18 @@ class Encounter():
 
         #select NPC to interact with
         #interactions may return flags that spawn social/combat encounters
+        for l in range(len(self.npc_list)):
+            print(l)
+            print(str(l + 1) + ". " + self.npc_list[l].name + " (Distance: " + str(self.npc_distances[l]) + "ft.)")
+        
+        choice = 0
+        while choice < 1 or choice > len(npc_names):
+            try:
+                choice = int(input("Make selection: "))
+            except:
+                print("Enter an integer between 1 and " + str(len(npc_names)))
+        
+        self.npc_list[choice - 1].interact(self, choice - 1, self.main_player)
 
         #spawn social/combat encounter
         #if combat, pass npc list to generate turn order
@@ -52,6 +72,7 @@ class Encounter():
         self.main_player = _player
         self.npc_list = _npc_list
         self.npc_distances = _npc_distances
+        self.min_distance = min(_npc_distances)
         self.location = _location
 
         self.begin_encounter()

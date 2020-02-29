@@ -77,10 +77,25 @@ class NPC:
         description may vary based on current location of player;
         also asks player what their next action is"""
 
-    def interact(self, player):
+    def interact(self, encounter, npc_index, player):
         """method for interacting with player;
-        is called when player chooses to/is forced to start encounter with NPC
-        defines extra dialogue options and paths to combat/social/skill encounters"""
+        defines standard interaction options, and auto-initiates combat/social encounters
+        concrete subclasses also define their own interaction options"""
+
+        close_proximity = encounter.npc_distances[npc_index] < 10
+
+        #if too close to avoid hostile enemy, automatically start combat encounter
+        if close_proximity and self.hostility == utils.HostilityLevel.HOSTILE:
+            print("You are too close to turn away or attempt to hide from the " + self.name + ", and they attack you on sight!")
+        else:
+            #standard options
+            print("1. Approach the " + self.name)
+            print("2. Attack!")
+            print("3. Attempt to sneak past")
+            print("4. Attempt to sneak up on the " + self.name)
+
+    def social(self):
+        """options for social encounter"""
 
     def fight(self, player):
         """defines strategy for NPC in combat with player;
