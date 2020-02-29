@@ -1,5 +1,5 @@
-#names for stats, by number
-stats_name_map = {
+#names for abilities, by number
+abils_name_map = {
     1: "Strength",
     2: "Dexterity",
     3: "Constitution",

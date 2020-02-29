@@ -4,9 +4,9 @@ import utils
 class Player:
     """class to represent player and their stats"""
 
-    #stats dictionary
+    #abilities dictionary
     #1: strength, 2: dexterity, 3: constitution, 4: intelligence, 5: wisdom, 6: charisma
-    stats = {
+    abils = {
         1: 0,
         2: 0,
         3: 0,
@@ -15,7 +15,7 @@ class Player:
         6: 0
     }
 
-    #skills dictionaries for each stat. boolean value represents whether player is trained in skill
+    #skills dictionaries for each ability. boolean value represents whether player is trained in skill
     str_skills = {
         "MELEE": False,
         "CLIMBING": False
@@ -51,53 +51,54 @@ class Player:
     speed = 0
     carry_cap = 0
 
-    def set_stats_manual(self):
-        """let user set stats manually. if user uses up all their budget, set remaining stats to 8"""
+    def set_abils_manual(self):
+        """let user set ability scores manually
+        if user uses up all their budget, set remaining scores to 8"""
         budget = 27
-        self.stats = {}
+        self.abils = {}
 
-        print("Set your stats below")
-        while len(self.stats) < 6:
+        print("\nSet your ability scores below")
+        while len(self.abils) < 6:
             if budget == 0:
                 #iterate over keys 1 to 6, if no value present set to 8
-                print("\nNo budget left, setting remaining stats to 8")
+                print("\nNo budget left, setting remaining ability scores to 8")
                 for i in range(1, 7):
-                    if not i in self.stats.keys():
-                        self.stats[i] = 8
+                    if not i in self.abils.keys():
+                        self.abils[i] = 8
             else:
                 print("\nBudget remaining: ", budget)
 
                 #input validation
-                stat_choice = 0
-                while stat_choice < 1 or stat_choice > 8:
+                abil_choice = 0
+                while abil_choice < 1 or abil_choice > 8:
                     try:
-                        stat_choice = int(input("1. Set Strength\n2. Set Dexterity\n3. Set Constitution\n4. Set Intelligence\n5. Set Wisdom\n6. Set Charisma\n7. View point costs\n8. Quit\n"))
+                        abil_choice = int(input("1. Set Strength\n2. Set Dexterity\n3. Set Constitution\n4. Set Intelligence\n5. Set Wisdom\n6. Set Charisma\n7. View point costs\n8. Quit\n"))
                     except:
                         print("Enter an integer between 1 and 8\n")
                 
-                #assigning stat value
-                if stat_choice in self.stats.keys():
-                    print("\nStat already assigned")
-                elif stat_choice < 7:
-                    stat_value = 0
-                    while stat_value < 8 or stat_value > 15:
+                #assigning ability score
+                if abil_choice in self.abils.keys():
+                    print("\nAbility score already assigned")
+                elif abil_choice < 7:
+                    abil_value = 0
+                    while abil_value < 8 or abil_value > 15:
                         try:
-                            stat_value = int(input("\nAssign a " + utils.stats_name_map[stat_choice] + " score between 8 & 15\n"))
+                            abil_value = int(input("\nAssign a " + utils.abils_name_map[abil_choice] + " score between 8 & 15\n"))
                         except:
                             print("Enter an integer between 8 and 15\n")
-                    stat_cost = utils.score_costs[stat_value]
-                    if stat_cost <= budget:
-                        self.stats[stat_choice] = stat_value
-                        budget -= stat_cost
-                elif stat_choice == 7:
+                    abil_cost = utils.score_costs[abil_value]
+                    if abil_cost <= budget:
+                        self.abils[abil_choice] = abil_value
+                        budget -= abil_cost
+                elif abil_choice == 7:
                     utils.display_costs()
                 else:
                     break
         
-        if len(self.stats) == 6:
-            print("\nStats:")
+        if len(self.abils) == 6:
+            print("\nAbility scores:")
             for i in range(1, 7):
-                print(utils.stats_name_map[i] + ": " + str(self.stats[i]))
+                print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
 
     def roll_4d6(self):
         """roll 4d6, drop the lowest. if total < 8, reroll"""
@@ -114,28 +115,28 @@ class Player:
             
         return rolls
 
-    def set_stats_random(self):
-        """roll for user stats"""
-        print("Rolling for stats...")
-        self.stats = {}
+    def set_abils_random(self):
+        """roll for user ability scores"""
+        print("Rolling for ability scores...")
+        self.abils = {}
         for i in range(1, 7):
-            self.stats[i] = sum(self.roll_4d6())
-            print(utils.stats_name_map[i] + ": " + str(self.stats[i]))
+            self.abils[i] = sum(self.roll_4d6())
+            print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
 
-    def stats_choice(self):
-        """set player stats"""
+    def abils_choice(self):
+        """set player ability scores"""
         print("Here you can assign your ability scores")
         method = ""
         while method != "1" and method != "2":
             method = input("1. Assign manually\n2. Assign randomly\n")
         if method == "1":
-            self.set_stats_manual()
+            self.set_abils_manual()
         else:
-            self.set_stats_random()
+            self.set_abils_random()
 
     def __init__(self):
         """constructor"""
         super().__init__()
 
-        #create user stats
-        self.stats_choice()
+        #assign ability scores
+        self.abils_choice()
