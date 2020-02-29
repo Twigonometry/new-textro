@@ -61,5 +61,11 @@ class Bandit(npc.NPC):
         """chase down player and engage in melee combat. retreat once below 10% HP;
         should be passed a combat_encounter object that describes state of current combat"""
 
+    def alert_close_proximity(self, multiple):
+        if multiple:
+            print("You are too close to turn away or attempt to hide from the closest bandit, and they attack you on sight!")
+        else:
+            print("You are too close to turn away or attempt to hide from the bandit, and they attack you on sight!")
+
     def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb):
         super().__init__(name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb)

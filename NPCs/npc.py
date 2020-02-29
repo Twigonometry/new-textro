@@ -82,17 +82,11 @@ class NPC:
         defines standard interaction options, and auto-initiates combat/social encounters
         concrete subclasses also define their own interaction options"""
 
-        close_proximity = encounter.npc_distances[npc_index] < 10
-
-        #if too close to avoid hostile enemy, automatically start combat encounter
-        if close_proximity and self.hostility == utils.HostilityLevel.HOSTILE:
-            print("You are too close to turn away or attempt to hide from the " + self.name + ", and they attack you on sight!")
-        else:
-            #standard options
-            print("1. Approach the " + self.name)
-            print("2. Attack!")
-            print("3. Attempt to sneak past")
-            print("4. Attempt to sneak up on the " + self.name)
+        #standard options
+        print("1. Approach the " + self.name)
+        print("2. Attack!")
+        print("3. Attempt to sneak past")
+        print("4. Attempt to sneak up on the " + self.name)
 
     def social(self):
         """options for social encounter"""
@@ -101,6 +95,9 @@ class NPC:
         """defines strategy for NPC in combat with player;
         behaviour may include chasing player down, retreating at certain HP etc;
         should generate a dynamic combat story throughout"""
+
+    def alert_close_proximity(self):
+        """prints a message to the screen if player comes too close to hostile NPC"""
 
     def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb):
         """constructor"""
