@@ -84,7 +84,7 @@ class Player:
                     break
         
         if len(self.abils) == 6:
-            self.display_abils
+            print("Ability scores assigned!")
 
     def roll_4d6(self):
         """roll 4d6, drop the lowest. if total < 8, reroll"""
@@ -115,6 +115,8 @@ class Player:
             print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
 
     def display_skills(self):
+        print("\nSkills:")
+
         for key in self.skills:
             abil_category = utils.skills_category_map[key]
             trained = self.skills[key]
@@ -156,16 +158,17 @@ class Player:
         self.skills[utils.skills_name_map[first_choice]] = True
         self.skills[utils.skills_name_map[second_choice]] = True
 
-        self.display_skills()
+        print("Skills selected!")
 
     def abils_choice(self):
         """set player ability scores"""
-        print("Here you can assign your ability scores")
+        print("Decide how to assign your ability scores")
         method = ""
         while method != "1" and method != "2":
             method = input("1. Assign manually\n2. Assign randomly\n")
         if method == "1":
             self.set_abils_manual()
+            self.display_abils()
         else:
             self.set_abils_random()
 
@@ -178,3 +181,5 @@ class Player:
 
         #pick skills
         self.pick_trained_skills()
+
+        self.display_stats()

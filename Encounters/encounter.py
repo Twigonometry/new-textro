@@ -27,9 +27,3 @@ class Encounter():
         self.main_player = _player
         self.npc_list = _npc_list
         self.npc_distances = _npc_distances
-
-        self.main_player.display_stats()
-        
-        for i in range(len(self.npc_list)):
-            self.npc_list[i].display_stats()
-            print("Distance: ", self.npc_distances[i])
