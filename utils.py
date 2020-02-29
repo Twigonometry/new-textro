@@ -8,6 +8,42 @@ abils_name_map = {
     6: "Charisma"
 }
 
+#names for skills, by number
+skills_name_map = {
+    1: "MELEE",
+    2: "CLIMBING",
+    3: "RANGED",
+    4: "STEALTH",
+    5: "INVESTIGATION",
+    6: "HISTORY",
+    7: "SURVIVAL",
+    8: "INSIGHT",
+    9: "PERCEPTION",
+    10: "MEDICINE",
+    11: "INTIMIDATION",
+    12: "DECEPTION",
+    13: "PERSUASION",
+    14: "PERFORMANCE"
+}
+
+#mapping skills to their ability category, by number
+skills_category_map = {
+    "MELEE": 1,
+    "CLIMBING": 1,
+    "RANGED": 2,
+    "STEALTH": 2,
+    "INVESTIGATION": 4,
+    "HISTORY": 4,
+    "SURVIVAL": 5,
+    "INSIGHT": 5,
+    "PERCEPTION": 5,
+    "MEDICINE": 5,
+    "INTIMIDATION": 6,
+    "DECEPTION": 6,
+    "PERSUASION": 6,
+    "PERFORMANCE": 6
+}
+
 #costs of assigning each score
 score_costs = {
     8: 0,

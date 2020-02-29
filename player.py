@@ -16,29 +16,17 @@ class Player:
     }
 
     #skills dictionaries for each ability. boolean value represents whether player is trained in skill
-    str_skills = {
+    skills = {
         "MELEE": False,
-        "CLIMBING": False
-    }
-
-    dex_skills = {
+        "CLIMBING": False,
         "RANGED": False,
-        "STEALTH": False
-    }
-
-    int_skills = {
+        "STEALTH": False,
         "INVESTIGATION": False,
-        "HISTORY": False
-    }
-
-    wis_skills = {
+        "HISTORY": False,
         "SURVIVAL": False,
         "INSIGHT": False,
         "PERCEPTION": False,
-        "MEDICINE": False
-    }
-
-    cha_skills = {
+        "MEDICINE": False,
         "INTIMIDATION": False,
         "DECEPTION": False,
         "PERSUASION": False,
@@ -117,11 +105,51 @@ class Player:
 
     def set_abils_random(self):
         """roll for user ability scores"""
-        print("Rolling for ability scores...")
+        print("\nRolling for ability scores...")
         self.abils = {}
         for i in range(1, 7):
             self.abils[i] = sum(self.roll_4d6())
             print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
+
+    def display_skills(self):
+        for key in self.skills:
+            abil_category = utils.skills_category_map[key]
+            trained = self.skills[key]
+
+            if trained:
+                modifier = str(utils.score_mods[self.abils[abil_category]] + 2) + " (trained)"
+            else:
+                modifier = str(utils.score_mods[self.abils[abil_category]])
+
+            print(key + ":= Modifier: " + modifier)
+
+    def pick_trained_skills(self):
+        print("\nPick two trained skills")
+        print("Strength-based skills:\n1. Melee Combat\n2. Climbing\n")
+        print("Dexterity-based skills:\n3. Ranged Combat\n4. Stealth\n")
+        print("Intelligence-based skills:\n5. Investigation\n6. History\n")
+        print("Wisdom-based skills:\n7. Survival\n8. Insight\n9. Perception\n10. Medicine\n")
+        print("Charisma-based skills:\n11. Intimidation\n12. Deception\n13. Persuasion\n14. Performance\n")
+        
+        first_choice = 0
+        while first_choice < 1 or first_choice > 14:
+            try:
+                first_choice = int(input("Pick your first skill\n"))
+            except:
+                print("Enter an integer between 1 and 14")
+        
+        second_choice = 0
+        while second_choice < 1 or second_choice > 14 or first_choice == second_choice:
+            try:
+                second_choice = int(input("Pick a different second skill\n"))
+            except:
+                print("Enter an integer between 1 and 14")
+
+        #setting skills to be trained
+        self.skills[utils.skills_name_map[first_choice]] = True
+        self.skills[utils.skills_name_map[second_choice]] = True
+
+        self.display_skills()
 
     def abils_choice(self):
         """set player ability scores"""
@@ -140,3 +168,6 @@ class Player:
 
         #assign ability scores
         self.abils_choice()
+
+        #pick skills
+        self.pick_trained_skills()
