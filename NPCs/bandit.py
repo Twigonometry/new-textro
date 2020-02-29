@@ -25,6 +25,7 @@ class Bandit(npc.NPC):
         
         print(plural + location_intro + "Their clothes are dusty and torn, but rough hide armour can be seen underneath the ragged holes. " + weapon_intro)
 
+    
     def fight(self):
         """chase down player and engage in melee combat. retreat once below 10% HP;
         should be passed a combat_encounter object that describes state of current combat"""

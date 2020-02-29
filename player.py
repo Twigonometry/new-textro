@@ -35,9 +35,11 @@ class Player:
 
     #other statistics
     health = 0
-    disease_resistance = 0
     speed = 0
+    disease_resistance = 0
     carry_cap = 0
+
+    name = ""
 
     def set_abils_manual(self):
         """let user set ability scores manually;
@@ -129,6 +131,11 @@ class Player:
             print(key + ":= Modifier: " + modifier)
 
     def display_stats(self):
+        print("\nCharacter Name: ", self.name)
+        print("\nHP: ", self.health)
+        print("Speed: ", self.speed)
+        print("Disease Resistance: ", self.disease_resistance)
+        print("Carrying Capacity: ", self.carry_cap)
         self.display_abils()
         self.display_skills()
 
@@ -172,14 +179,27 @@ class Player:
         else:
             self.set_abils_random()
 
+    def generate_stats(self):
+        """generate remaining stats that are dependent on player ability scores"""
+        self.health = 10 + sum(utils.die_roll(8, 2, single_mod=0)) + utils.score_mods[self.abils[3]]
+        self.speed = 30 + utils.score_mods[self.abils[2]]
+        self.disease_resistance = sum(utils.die_roll(4, 1)) + utils.score_mods[self.abils[3]]
+        self.carry_cap = 20 + utils.score_mods[self.abils[1]]
+
     def __init__(self):
         """constructor"""
         super().__init__()
+
+        print("Create your character to explore New Metro")
+        self.name = input("Enter your name\n")
 
         #assign ability scores
         self.abils_choice()
 
         #pick skills
         self.pick_trained_skills()
+
+        #generate remaining stats
+        self.generate_stats()
 
         self.display_stats()
