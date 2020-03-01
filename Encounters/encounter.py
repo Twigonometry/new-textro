@@ -17,6 +17,10 @@ class Encounter():
     npc_list = []
     npc_distances = []
 
+    #npc names and quantities by type
+    npc_names = []
+    npc_quantities = []
+
     location = world.LocationType
 
     def begin_encounter(self):
@@ -24,27 +28,11 @@ class Encounter():
         introduce NPCs, present interaction choices, and start social/combat encounter based on choices"""
 
         #introduce NPCs - run all introduce methods, unless the NPCs have the same name
-        #npc_indices tracks index of npc to introduce
-        npc_names = []
-        npc_indices = []
-        npc_quantities = []
-
-        #finding enemy quantities by name
-        for i in range(len(self.npc_list)):
-            _npc = self.npc_list[i]
-            if _npc.name not in npc_names:
-                npc_names.append(_npc.name)
-                npc_indices.append(i)
-                npc_quantities.append(1)
-            else:
-                for j in range(len(npc_names)):
-                    if npc_names[j] == _npc.name:
-                        npc_quantities[j] += 1
-        
-        #call introduce methods
-        for k in range(len(npc_indices)):
-            npc_index = npc_indices[k]
-            self.npc_list[npc_index].introduce(npc_quantities[k], self.location)
+        for i in range(len(self.npc_names)):
+            for _npc in self.npc_list:
+                if _npc.name == self.npc_names[i]:
+                    _npc.introduce(self.npc_quantities[i], self.location)
+                    break
 
         #list visible enemies
         self.display_npcs()
@@ -56,28 +44,38 @@ class Encounter():
             if self.npc_distances[m] < 10:
                 if self.npc_list[m].hostility == utils.HostilityLevel.HOSTILE:
                     hostile_close_proximity = True
-                    multiple = npc_quantities[npc_names.index(self.npc_list[m].name)] > 1
+                    multiple = self.npc_quantities[self.npc_names.index(self.npc_list[m].name)] > 1
                     self.npc_list[m].alert_close_proximity(multiple)
+
+        interaction_result = NextState
         
         if hostile_close_proximity:
             #start combat
             print("Starting combat")
+            interaction_result = NextState.COMBAT
         else:
             #run interaction choice menu - interactions may return flags that spawn social/combat encounters
+            print("Select NPC to interact with:")
             for l in range(len(self.npc_list)):
                 print(str(l + 1) + ". " + self.npc_list[l].name + " (Distance: " + str(self.npc_distances[l]) + "ft.)")
             
             choice = 0
-            while choice < 1 or choice > len(npc_names) + 1:
+            while choice < 1 or choice > len(self.npc_names) + 1:
                 try:
                     choice = int(input("Make selection: "))
                 except:
-                    print("Enter an integer between 1 and " + str(len(npc_names)))
+                    print("Enter an integer between 1 and " + str(len(self.npc_names)))
             
-            self.npc_list[choice - 1].interact(self, choice - 1, self.main_player)
+            interaction_result = self.npc_list[choice - 1].interact(self, choice - 1, self.main_player)
+            print(str(interaction_result))
 
         #spawn social/combat encounter
         #if combat, pass npc list to generate turn order
+        if interaction_result.name == "COMBAT":
+            #spawn combat encounter
+            print("Starting combat")
+        else:
+            print("Not starting combat")
 
         #when encounter ends, present next choices and any loot from area
 
@@ -95,5 +93,17 @@ class Encounter():
         self.npc_list = _npc_list
         self.npc_distances = _npc_distances
         self.location = _location
+
+        #list of NPC names
+        temp_names = []
+        for _npc in _npc_list:
+            temp_names.append(_npc.name)
+        
+        self.npc_names = list(set(temp_names))
+
+        for name in self.npc_names:
+            self.npc_quantities.append(temp_names.count(name))
+
+        print("Starting encounter")
 
         self.begin_encounter()

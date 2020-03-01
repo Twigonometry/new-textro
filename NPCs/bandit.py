@@ -1,5 +1,6 @@
 import npc
 import world_engine as world
+import encounter as enc_class
 
 class Bandit(npc.NPC):
     """basic bandit enemy"""
@@ -45,8 +46,10 @@ class Bandit(npc.NPC):
         if choice == 1:
             #approaching bandit starts combat encounter
             print("You approach the bandit, hoping to start a dialogue, but they launch into a desperate rage and charge towards you.")
+            return enc_class.NextState.COMBAT
         elif choice == 2:
             print("You charge into combat, and the bandit looks up and grabs their weapon.")
+            return enc_class.NextState.COMBAT
         elif choice == 3:
             #make stealth check - present next area if success, launch combat if failure
             print("You take a deep, silent breath, and try to tiptoe past the bandit.")
