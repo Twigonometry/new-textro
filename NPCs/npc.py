@@ -9,7 +9,12 @@ class NPC:
     health = 0
     speed = 0
 
+    #skills and assorted ability modifiers
+    abils = {}
+    skill_mods = {}
+
     hostility = utils.HostilityLevel
+    preferredEnemyName = ""
 
     #combat attributes
     melee_weapon_name = ""
@@ -99,7 +104,7 @@ class NPC:
     def alert_close_proximity(self):
         """prints a message to the screen if player comes too close to hostile NPC"""
 
-    def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb):
+    def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb, pen, abils, skills_dict):
         """constructor"""
         super().__init__()
         self.name = name
@@ -116,3 +121,6 @@ class NPC:
         self.ranged_attack_bonus = rab
         self.ranged_damage_die = rdd
         self.ranged_damage_bonus = rdb
+        self.preferredEnemyName = pen
+        self.abils = abils
+        self.skills_dict = skills_dict

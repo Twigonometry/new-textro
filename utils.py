@@ -189,6 +189,31 @@ def die_roll(n, m, **kwargs):
 
     return rolls
 
+def skill_check(skill, skill_dict, target, kwargs):
+    """roll 1d20 with a modifier and compare to target number, return True/False;
+    if skill is present in player/NPC's skills dictionary, use its modifier;
+    kwargs adv and dis represent advantage and disadvantage (true/false values)"""
+
+    modifier = 0
+
+    if skill in skill_dict:
+        modifier = skill_dict[skill]
+
+    #advantage/disadvantage
+    adv = False
+    dis = False
+    if 'adv' in kwargs:
+        adv = kwargs.get('adv')
+    if 'dis' in kwargs:
+        dis = kwargs.get('dis')
+    
+    result = die_roll(20, 1, single_mod=modifier, adv=adv, dis=dis)
+    
+    if result >= target:
+        return True
+    else:
+        return False
+
 #enum for NPC hostility
 class HostilityLevel(enum.Enum):
     FRIENDLY = "FRIENDLY"

@@ -3,6 +3,7 @@ import player
 import npc
 import world_engine as world
 import enum
+import combat_encounter as combat
 
 class NextState(enum.Enum):
     FINISHED = "FINISHED"
@@ -51,7 +52,6 @@ class Encounter():
         
         if hostile_close_proximity:
             #start combat
-            print("Starting combat")
             interaction_result = NextState.COMBAT
         else:
             #run interaction choice menu - interactions may return flags that spawn social/combat encounters
@@ -74,6 +74,7 @@ class Encounter():
         if interaction_result.name == "COMBAT":
             #spawn combat encounter
             print("Starting combat")
+            new_combat = combat.CombatEncounter(self.main_player, self.npc_list, self.npc_distances, self.npc_names, self.npc_quantities)
         elif interaction_result.name == "SOCIAL":
             #spawn social encounter
             print("Starting social encounter")

@@ -70,5 +70,5 @@ class Bandit(npc.NPC):
         else:
             print("You are too close to turn away or attempt to hide from the bandit, and they attack you on sight!")
 
-    def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb):
-        super().__init__(name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb)
+    def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb, pen, abils, skills_dict):
+        super().__init__(name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb, pen, abils, skills_dict)
