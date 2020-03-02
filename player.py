@@ -186,6 +186,10 @@ class Player:
         self.disease_resistance = sum(utils.die_roll(4, 1)) + utils.score_mods[self.abils[3]]
         self.carry_cap = 20 + utils.score_mods[self.abils[1]]
 
+        #make sure disease resistance cannot be < 1
+        if self.disease_resistance < 1:
+            self.disease_resistance = 1
+
     def __init__(self):
         """constructor"""
         super().__init__()
