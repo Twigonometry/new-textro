@@ -33,6 +33,24 @@ class Player:
         "PERFORMANCE": False
     }
 
+    #list of modifiers for skills
+    skill_mods = {
+        "MELEE": 0,
+        "CLIMBING": 0,
+        "RANGED": 0,
+        "STEALTH": 0,
+        "INVESTIGATION": 0,
+        "HISTORY": 0,
+        "SURVIVAL": 0,
+        "INSIGHT": 0,
+        "PERCEPTION": 0,
+        "MEDICINE": 0,
+        "INTIMIDATION": 0,
+        "DECEPTION": 0,
+        "PERSUASION": 0,
+        "PERFORMANCE": 0
+    }
+
     #other statistics
     health = 0
     speed = 0
@@ -117,16 +135,16 @@ class Player:
             print(utils.abils_name_map[i] + ": " + str(self.abils[i]))
 
     def display_skills(self):
+        """display all skills, modifiers, and trained status"""
         print("\nSkills:")
 
         for key in self.skills:
-            abil_category = utils.skills_category_map[key]
             trained = self.skills[key]
 
             if trained:
-                modifier = str(utils.score_mods[self.abils[abil_category]] + 2) + " (trained)"
+                modifier = str(self.skill_mods[key]) + " (trained)"
             else:
-                modifier = str(utils.score_mods[self.abils[abil_category]])
+                modifier = str(self.skill_mods[key])
 
             print(key + ":= Modifier: " + modifier)
 
@@ -167,6 +185,18 @@ class Player:
 
         print("Skills selected!")
 
+    def set_skill_mods(self):
+        """save skill modifiers to dictionary"""
+        for skill in self.skills:
+            abil_category = utils.skills_category_map[skill]
+
+            if self.skills[skill]:
+                modifier = utils.get_score_mod(self.abils[abil_category]) + 2
+            else:
+                modifier = utils.get_score_mod(self.abils[abil_category])
+
+            self.skill_mods[skill] = modifier
+    
     def abils_choice(self):
         """set player ability scores"""
         print("Decide how to assign your ability scores")
@@ -181,10 +211,10 @@ class Player:
 
     def generate_stats(self):
         """generate remaining stats that are dependent on player ability scores"""
-        self.health = 10 + sum(utils.die_roll(8, 2, single_mod=0)) + utils.score_mods[self.abils[3]]
-        self.speed = 30 + utils.score_mods[self.abils[2]]
-        self.disease_resistance = sum(utils.die_roll(4, 1)) + utils.score_mods[self.abils[3]]
-        self.carry_cap = 20 + utils.score_mods[self.abils[1]]
+        self.health = 10 + sum(utils.die_roll(8, 2, single_mod=0)) + utils.get_score_mod(self.abils[3])
+        self.speed = 30 + utils.get_score_mod(self.abils[2])
+        self.disease_resistance = sum(utils.die_roll(4, 1)) + utils.get_score_mod(self.abils[3])
+        self.carry_cap = 20 + utils.get_score_mod(self.abils[1])
 
         #make sure disease resistance cannot be < 1
         if self.disease_resistance < 1:
@@ -202,6 +232,7 @@ class Player:
 
         #pick skills
         self.pick_trained_skills()
+        self.set_skill_mods()
 
         #generate remaining stats
         self.generate_stats()

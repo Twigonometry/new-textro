@@ -93,6 +93,15 @@ score_mods = {
     30: 10
 }
 
+def get_score_mod(score):
+    """looks up modifier for a score, with validated input"""
+    if score < 2:
+        return score_mods[1]
+    elif score > 29:
+        return score_mods[30]
+    else:
+        return score_mods[score]
+
 def die_roll(n, m, **kwargs):
     """roll an n-sided die m times;
     kwargs can specify a single modifier to apply to all rolls
