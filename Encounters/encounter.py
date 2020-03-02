@@ -74,10 +74,16 @@ class Encounter():
         if interaction_result.name == "COMBAT":
             #spawn combat encounter
             print("Starting combat")
-        else:
-            print("Not starting combat")
-
-        #when encounter ends, present next choices and any loot from area
+        elif interaction_result.name == "SOCIAL":
+            #spawn social encounter
+            print("Starting social encounter")
+        elif interaction_result.name == "FINISHED":
+            #present next choices, award loot from area
+            #allow player to interact with any remaining/new NPCs
+            print("Encounter finished")
+        elif interaction_result.name == "DEATH":
+            #kill the player and end the game
+            print("Player dead")
 
     def display_npcs(self):
         """quick description of npcs in current location"""
