@@ -105,24 +105,87 @@ def get_score_mod(score):
 def die_roll(n, m, **kwargs):
     """roll an n-sided die m times;
     kwargs can specify a single modifier to apply to all rolls
-    or an m-array of modifiers to apply in turn"""
+    or an m-array of modifiers to apply in turn
+    adv param grants advantage if True, dis param grants disadvantage if True
+    advantage rolls twice and picks highest, disadvantage rolls twice and picks lowest"""
 
     rolls = []
+
+    #getting advantage and disadvantage, cancel out if both present
+    adv = False
+    dis = False
+    if 'adv' in kwargs:
+        adv = kwargs.get('adv')
+    if 'dis' in kwargs:
+        dis = kwargs.get('dis')
+    if adv and dis:
+        adv = False
+        dis = False
 
     #roll with single modifier applied to all rolls
     if 'single_mod' in kwargs:
         single_mod = kwargs.get('single_mod')
         for i in range(m):
-            rolls.append(randint(1, n) + single_mod)
+            if adv:
+                temp_rolls = []
+                print("Rolling with advantage!")
+                temp_rolls.append(randint(1, n) + single_mod)
+                temp_rolls.append(randint(1, n) + single_mod)
+                print(temp_rolls)
+                rolls.append(max(temp_rolls))
+            elif dis:
+                print("Rolling with disadvantage!")
+                temp_rolls = []
+                temp_rolls.append(randint(1, n) + single_mod)
+                temp_rolls.append(randint(1, n) + single_mod)
+                print(temp_rolls)
+                rolls.append(min(temp_rolls))
+            else:
+                rolls.append(randint(1, n) + single_mod)
 
     #roll with array of different modifiers
-    if 'mod_array' in kwargs:
+    elif 'mod_array' in kwargs:
         mod_array = kwargs.get('mod_array')
         if len(mod_array) != m:
             print("Number of modifiers must equal number of dice")
         else:
             for mod in mod_array:
-                rolls.append(randint(1, n) + mod)
+                if adv:
+                    print("Rolling with advantage!")
+                    temp_rolls = []
+                    temp_rolls.append(randint(1, n) + mod)
+                    temp_rolls.append(randint(1, n) + mod)
+                    print(temp_rolls)
+                    rolls.append(max(temp_rolls))
+                elif dis:
+                    print("Rolling with disadvantage!")
+                    temp_rolls = []
+                    temp_rolls.append(randint(1, n) + mod)
+                    temp_rolls.append(randint(1, n) + mod)
+                    print(temp_rolls)
+                    rolls.append(min(temp_rolls))
+                else:
+                    rolls.append(randint(1, n) + mod)
+
+    #no modifier provided
+    else:
+        for i in range(m):
+            if adv:
+                print("Rolling with advantage!")
+                temp_rolls = []
+                temp_rolls.append(randint(1, n))
+                temp_rolls.append(randint(1, n))
+                print(temp_rolls)
+                rolls.append(max(temp_rolls))
+            elif dis:
+                print("Rolling with disadvantage!")
+                temp_rolls = []
+                temp_rolls.append(randint(1, n))
+                temp_rolls.append(randint(1, n))
+                print(temp_rolls)
+                rolls.append(min(temp_rolls))
+            else:
+                rolls.append(randint(1, n))
 
     return rolls
 
@@ -139,10 +202,12 @@ def display_costs():
 
 def main():
     print("Gambling...")
+    print("1d8\n", die_roll(8, 1, adv=False))
     print("1d6 + 1\n", die_roll(6, 1, single_mod=1))
-    print("3d20 + 3\n", die_roll(20, 3, single_mod=3))
-    print("4d8 with modifiers 1, 2, 3, 4\n", die_roll(8, 4, mod_array=[1, 2, 3, 4]))
-    print("2d4 with not enough mods!\n", die_roll(4, 2, mod_array=[1]))
+    print("3d20 + 3\n", die_roll(20, 3, single_mod=3, adv=True))
+    print("4d8 with modifiers 1, 2, 3, 4\n", die_roll(8, 4, mod_array=[1, 2, 3, 4], dis=True))
+    print("4d8 with modifiers 1, 2, 3, 4\n", die_roll(8, 4, mod_array=[1, 2, 3, 4], adv=True, dis=True))
+    print("2d4 with not enough mods!\n", die_roll(4, 2, mod_array=[1], adv=True, dis=True))
 
 if __name__ == '__main__':
     main()

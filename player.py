@@ -190,6 +190,7 @@ class Player:
         for skill in self.skills:
             abil_category = utils.skills_category_map[skill]
 
+            #if trained, add 2 to the modifier
             if self.skills[skill]:
                 modifier = utils.get_score_mod(self.abils[abil_category]) + 2
             else:
