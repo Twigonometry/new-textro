@@ -8,8 +8,8 @@ class CombatEncounter():
     npc_distances = []
     npc_names = []
     npc_quantities = []
-    npc_initiatives = []
     turn_order = []
+    non_friendlies = []
 
     def get_turn_order(self):
         """generate turn order based on dexterity modifiers"""
@@ -21,6 +21,10 @@ class CombatEncounter():
         for _npc in self.npc_list:
             modifier = utils.get_score_mod(_npc.abils[2])
             party_list.append((_npc, utils.die_roll(20, 1, single_mod=modifier)))
+
+            #add name to list of non-friendly NPCs
+            if not _npc.hostility == utils.HostilityLevel.FRIENDLY:
+                self.non_friendlies.append(_npc.name)
         
         player_dex = utils.get_score_mod(self.main_player.abils[2])
         player_initiative = utils.die_roll(20, 1, single_mod=player_dex)
@@ -28,20 +32,21 @@ class CombatEncounter():
         #append player to list with PLAYER marker so it can be extracted later
         party_list.append(("PLAYER", player_initiative))
 
-        print(party_list)
-
         #sort list by initiative
-        party_list.sort(key = lambda x: x[1])
-
-        print(party_list)
+        party_list.sort(key = lambda x: x[1], reverse=True)
 
         #unzip list to get parties in order
-        parties = [list(p) for p in zip(*party_list)][0]
-        
-        print(parties)
+        self.turn_order = [list(p) for p in zip(*party_list)][0]
 
-        #remove player tuple
-        #player_tuple = party_list.pop([party_list[0] for p in party_list].index("PLAYER"))
+    def run_combat(self):
+        """while there are still enemies present, allow each party in combat to fight in turn"""
+        while len(self.non_friendlies) > 0:
+            for party in self.turn_order:
+                if party == "PLAYER":
+                    print("Present player with combat options")
+                else:
+                    #run NPC's combat method
+                    party.fight()
 
     def __init__(self, _player, npc_list, npc_distances, npc_names, npc_quantities):
         super().__init__()
@@ -52,3 +57,8 @@ class CombatEncounter():
         self.npc_quantities = npc_quantities
 
         self.get_turn_order()
+
+        print(self.turn_order)
+        print(self.non_friendlies)
+
+        self.run_combat()

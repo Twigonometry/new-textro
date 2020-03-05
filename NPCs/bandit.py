@@ -1,6 +1,7 @@
 import npc
 import world_engine as world
 import encounter as enc_class
+import utils
 
 class Bandit(npc.NPC):
     """basic bandit enemy"""
@@ -44,9 +45,13 @@ class Bandit(npc.NPC):
 
         #based on choice, return a flag to encounter method that tells it what to do next
         if choice == 1:
-            #approaching bandit starts combat encounter
-            print("You approach the bandit, hoping to start a dialogue, but they launch into a desperate rage and charge towards you.")
-            return enc_class.NextState.COMBAT
+            #approaching hostile bandit starts combat encounter
+            if self.hostility == utils.HostilityLevel.HOSTILE:
+                print("You approach the bandit, hoping to start a dialogue, but they launch into a desperate rage and charge towards you.")
+                return enc_class.NextState.COMBAT
+            else:
+                print("You approach the bandit and, to your surprise, they look up without immediately reaching for their weapon.")
+                return enc_class.NextState.SOCIAL
         elif choice == 2:
             print("You charge into combat, and the bandit looks up and grabs their weapon.")
             return enc_class.NextState.COMBAT
@@ -63,6 +68,7 @@ class Bandit(npc.NPC):
     def fight(self):
         """chase down player and engage in melee combat. retreat once below 10% HP;
         should be passed a combat_encounter object that describes state of current combat"""
+        print(self.name + " fighting")
 
     def alert_close_proximity(self, multiple):
         if multiple:

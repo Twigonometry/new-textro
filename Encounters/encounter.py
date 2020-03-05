@@ -47,6 +47,7 @@ class Encounter():
                     hostile_close_proximity = True
                     multiple = self.npc_quantities[self.npc_names.index(self.npc_list[m].name)] > 1
                     self.npc_list[m].alert_close_proximity(multiple)
+                    break
 
         interaction_result = NextState
         
@@ -67,7 +68,6 @@ class Encounter():
                     print("Enter an integer between 1 and " + str(len(self.npc_names)))
             
             interaction_result = self.npc_list[choice - 1].interact(self, choice - 1, self.main_player)
-            print(str(interaction_result))
 
         #spawn social/combat encounter
         #if combat, pass npc list to generate turn order
