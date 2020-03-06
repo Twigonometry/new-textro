@@ -220,6 +220,11 @@ class HostilityLevel(enum.Enum):
     NEUTRAL = "NEUTRAL"
     HOSTILE = "HOSTILE"
 
+class NPCSize(enum.Enum):
+    SMALL = "SMALL"
+    MEDIUM = "MEDIUM"
+    LARGE = "LARGE"
+
 def display_costs():
     print("\nCosts for each ability score:")
     for score in score_costs:

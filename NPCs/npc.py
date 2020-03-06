@@ -7,7 +7,9 @@ class NPC:
     name = ""
     race = ""
     health = 0
+    AC = 0
     speed = 0
+    size = utils.NPCSize
 
     #skills and assorted ability modifiers
     abils = {}
@@ -25,6 +27,7 @@ class NPC:
     has_ranged_attack = False
     ranged_weapon_name = ""
     ranged_attack_bonus = 0
+    ranged_weapon_range = 0
     ranged_damage_die = (0, 0)
     ranged_damage_bonus = 0
 
@@ -104,13 +107,15 @@ class NPC:
     def alert_close_proximity(self):
         """prints a message to the screen if player comes too close to hostile NPC"""
 
-    def __init__(self, name, race, health, speed, host, mwn, mab, mdd, mdb, hra, rwn, rab, rdd, rdb, pen, abils, skills_dict):
+    def __init__(self, name, race, health, AC, speed, size, host, mwn, mab, mdd, mdb, hra, rwn, rab, rwr, rdd, rdb, pen, abils, skills_dict):
         """constructor"""
         super().__init__()
         self.name = name
         self.race = race
         self.health = health
+        self.AC = AC
         self.speed = speed
+        self.size = size
         self.hostility = host
         self.melee_weapon_name = mwn
         self.melee_attack_bonus = mab
@@ -119,6 +124,7 @@ class NPC:
         self.has_ranged_attack = hra
         self.ranged_weapon_name = rwn
         self.ranged_attack_bonus = rab
+        self.ranged_weapon_range = rwr
         self.ranged_damage_die = rdd
         self.ranged_damage_bonus = rdb
         self.preferredEnemyName = pen
