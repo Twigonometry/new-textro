@@ -6,21 +6,28 @@ class CombatEncounter():
     main_player = None
     npc_list = []
     npc_distances = []
-    npc_names = []
     npc_quantities = []
     turn_order = []
     non_friendlies = []
+    adjacent_npcs = []
 
-    def get_turn_order(self):
-        """generate turn order based on dexterity modifiers"""
+    def setup_combat(self):
+        """generate turn order based on dexterity modifiers, and record adjacencies to player"""
 
         #tuple list of all parties in combat, including player, and their initiatives
         party_list = []
 
         #calculate initiatives for each NPC
-        for _npc in self.npc_list:
+        for i in range(len(self.npc_list)):
+            _npc = self.npc_list[i]
             modifier = utils.get_score_mod(_npc.abils[2])
             party_list.append((_npc, utils.die_roll(20, 1, single_mod=modifier)))
+
+            #is npc adjacent?
+            if self.npc_distances[i] <= 5:
+                self.adjacent_npcs.append(True)
+            else:
+                self.adjacent_npcs.append(False)
 
             #add name to list of non-friendly NPCs
             if not _npc.hostility == utils.HostilityLevel.FRIENDLY:
@@ -43,20 +50,34 @@ class CombatEncounter():
         while len(self.non_friendlies) > 0:
             for party in self.turn_order:
                 if party == "PLAYER":
-                    print("Present player with combat options")
+                    self.player_turn()
                 else:
                     #run NPC's combat method
                     party.fight()
 
-    def __init__(self, _player, npc_list, npc_distances, npc_names, npc_quantities):
+    def player_turn(self):
+        """present player with a series of combat options"""
+
+        #tell player which NPCs are in melee range (within 5 feet)
+        engagements = 0
+        print("Engaged in melee with the following NPCs:")
+        for i in range(len(self.adjacent_npcs)):
+            if self.adjacent_npcs[i]:
+                engagements += 1
+                print(str(engagements) + ") " + self.npc_list[i].name)
+        if engagements == 0:
+            print("\tNone")
+
+        print("\nSelect option")
+
+    def __init__(self, _player, npc_list, npc_distances, npc_quantities):
         super().__init__()
         self.main_player = _player
         self.npc_list = npc_list
         self.npc_distances = npc_distances
-        self.npc_names = npc_names
         self.npc_quantities = npc_quantities
 
-        self.get_turn_order()
+        self.setup_combat()
 
         print(self.turn_order)
         print(self.non_friendlies)

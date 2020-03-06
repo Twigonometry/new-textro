@@ -74,7 +74,7 @@ class Encounter():
         if interaction_result.name == "COMBAT":
             #spawn combat encounter
             print("Starting combat")
-            new_combat = combat.CombatEncounter(self.main_player, self.npc_list, self.npc_distances, self.npc_names, self.npc_quantities)
+            new_combat = combat.CombatEncounter(self.main_player, self.npc_list, self.npc_distances, self.npc_quantities)
         elif interaction_result.name == "SOCIAL":
             #spawn social encounter
             print("Starting social encounter")
