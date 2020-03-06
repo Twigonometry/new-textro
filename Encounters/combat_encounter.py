@@ -48,15 +48,23 @@ class CombatEncounter():
     def run_combat(self):
         """while there are still enemies present, allow each party in combat to fight in turn"""
         while len(self.non_friendlies) > 0:
-            for party in self.turn_order:
+            player_found = False
+            for i in range(len(self.turn_order)):
+                party = self.turn_order[i]
                 if party == "PLAYER":
+                    player_found = True
                     self.player_turn()
                 else:
                     #run NPC's combat method
-                    party.fight()
+                    if player_found:
+                        party.fight(self, i - 1)
+                    else:
+                        party.fight(self, i)
 
     def player_turn(self):
         """present player with a series of combat options"""
+
+        print("Your turn!\n")
 
         #tell player which NPCs are in melee range (within 5 feet)
         engagements = 0
@@ -68,7 +76,7 @@ class CombatEncounter():
         if engagements == 0:
             print("\tNone")
 
-        print("\nSelect option")
+        choice = input("\nSelect option")
 
     def __init__(self, _player, npc_list, npc_distances, npc_quantities):
         super().__init__()

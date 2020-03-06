@@ -65,10 +65,24 @@ class Bandit(npc.NPC):
             #leave the area and return to the previous one
             print("You turn around, unnoticed by the bandit.")
     
-    def fight(self):
+    def fight(self, combat_encounter, npc_index):
         """chase down player and engage in melee combat. retreat once below 10% HP;
-        should be passed a combat_encounter object that describes state of current combat"""
-        print(self.name + " fighting")
+        takes a combat_encounter object that describes state of current combat, and its own index within that encounter"""
+        print(self.name + " fighting\n")
+        print("Index: ", npc_index)
+
+        dist = combat_encounter.npc_distances[npc_index]
+        if dist > 5:
+            new_dist = super().approach_player(dist)
+
+            print("The bandit approaches you! It is now " + str(new_dist) + "ft. away\n")
+
+            #update adjacencies
+            if new_dist <= 5:
+                combat_encounter.adjacent_npcs[npc_index] = True
+
+            #update distances
+            combat_encounter.npc_distances[npc_index] = new_dist
 
     def alert_close_proximity(self, multiple):
         if multiple:

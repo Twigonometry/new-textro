@@ -104,6 +104,17 @@ class NPC:
         behaviour may include chasing player down, retreating at certain HP etc;
         should generate a dynamic combat story throughout"""
 
+    def approach_player(self, distance):
+        """moves directly towards the player, and returns the new distance"""
+        if self.speed >= distance:
+            #tiny enemy occupies same space as player
+            if self.size == utils.NPCSize.TINY:
+                return 0
+            else:
+                return 5
+        else:
+            return distance - self.speed
+
     def alert_close_proximity(self):
         """prints a message to the screen if player comes too close to hostile NPC"""
 

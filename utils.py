@@ -221,6 +221,7 @@ class HostilityLevel(enum.Enum):
     HOSTILE = "HOSTILE"
 
 class NPCSize(enum.Enum):
+    TINY = "TINY"
     SMALL = "SMALL"
     MEDIUM = "MEDIUM"
     LARGE = "LARGE"
