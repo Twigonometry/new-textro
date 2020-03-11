@@ -69,10 +69,11 @@ class Bandit(npc.NPC):
         """chase down player and engage in melee combat. retreat once below 10% HP;
         takes a combat_encounter object that describes state of current combat, and its own index within that encounter"""
         print(self.name + " fighting\n")
-        print("Index: ", npc_index)
 
         dist = combat_encounter.npc_distances[npc_index]
-        if dist > 5:
+
+        #if not engaged with player and there is a free spot, approach them
+        if dist > 5 and combat_encounter.engagements < 4:
             new_dist = super().approach_player(dist)
 
             print("The bandit approaches you! It is now " + str(new_dist) + "ft. away\n")
@@ -83,6 +84,18 @@ class Bandit(npc.NPC):
 
             #update distances
             combat_encounter.npc_distances[npc_index] = new_dist
+        
+        #if there is no free spot, attack from a distance
+        elif dist > 5:
+            print("The bandit attacks you with its " + self.ranged_weapon_name)
+
+            combat_encounter.attack_player(self.name, self.ranged_attack_bonus, self.ranged_damage_die, self.ranged_damage_bonus)
+
+        #attack with melee weapon if close enough
+        else:
+            print("The bandit attacks you with its " + self.melee_weapon_name)
+
+            combat_encounter.attack_player(self.name, self.melee_attack_bonus, self.melee_damage_die, self.melee_damage_bonus)
 
     def alert_close_proximity(self, multiple):
         if multiple:

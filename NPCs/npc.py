@@ -6,7 +6,8 @@ class NPC:
     #attributes
     name = ""
     race = ""
-    health = 0
+    max_health = 0
+    current_health = 0
     AC = 0
     speed = 0
     size = utils.NPCSize
@@ -16,7 +17,7 @@ class NPC:
     skill_mods = {}
 
     hostility = utils.HostilityLevel
-    preferredEnemyName = ""
+    preferred_enemy_name = ""
 
     #combat attributes
     melee_weapon_name = ""
@@ -34,7 +35,7 @@ class NPC:
     def display_stats(self):
         print("NPC Name: ", self.name)
         print("Race: ", self.race)
-        print("Health: ", self.health)
+        print("Max Health: ", self.max_health)
         print("Speed: ", self.speed)
 
         mdd = self.melee_damage_die
@@ -123,7 +124,8 @@ class NPC:
         super().__init__()
         self.name = name
         self.race = race
-        self.health = health
+        self.max_health = health
+        self.current_health = health
         self.AC = AC
         self.speed = speed
         self.size = size
@@ -138,6 +140,6 @@ class NPC:
         self.ranged_weapon_range = rwr
         self.ranged_damage_die = rdd
         self.ranged_damage_bonus = rdb
-        self.preferredEnemyName = pen
+        self.preferred_enemy_name = pen
         self.abils = abils
         self.skills_dict = skills_dict

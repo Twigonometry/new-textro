@@ -52,10 +52,12 @@ class Player:
     }
 
     #other statistics
-    health = 0
+    max_health = 0
+    current_health = 0
     speed = 0
     disease_resistance = 0
     carry_cap = 0
+    AC = 0
 
     name = ""
 
@@ -150,10 +152,11 @@ class Player:
 
     def display_stats(self):
         print("\nCharacter Name: ", self.name)
-        print("\nHP: ", self.health)
+        print("\nHP: ", self.max_health)
         print("Speed: ", self.speed)
         print("Disease Resistance: ", self.disease_resistance)
         print("Carrying Capacity: ", self.carry_cap)
+        print("Armour Class: ", self.AC)
         self.display_abils()
         self.display_skills()
 
@@ -212,10 +215,12 @@ class Player:
 
     def generate_stats(self):
         """generate remaining stats that are dependent on player ability scores"""
-        self.health = 10 + sum(utils.die_roll(8, 2, single_mod=0)) + utils.get_score_mod(self.abils[3])
+        self.max_health = 10 + sum(utils.die_roll(8, 2, single_mod=0)) + utils.get_score_mod(self.abils[3])
+        self.current_health = self.max_health
         self.speed = 30 + utils.get_score_mod(self.abils[2])
         self.disease_resistance = sum(utils.die_roll(4, 1)) + utils.get_score_mod(self.abils[3])
         self.carry_cap = 20 + utils.get_score_mod(self.abils[1])
+        self.AC = 10 + utils.get_score_mod(self.abils[2])
 
         #make sure disease resistance cannot be < 1
         if self.disease_resistance < 1:

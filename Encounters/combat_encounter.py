@@ -10,6 +10,7 @@ class CombatEncounter():
     turn_order = []
     non_friendlies = []
     adjacent_npcs = []
+    engagements = 0
 
     def setup_combat(self):
         """generate turn order based on dexterity modifiers, and record adjacencies to player"""
@@ -66,17 +67,34 @@ class CombatEncounter():
 
         print("Your turn!\n")
 
+        print("Your current health: ", self.main_player.current_health)
+
         #tell player which NPCs are in melee range (within 5 feet)
-        engagements = 0
+        self.engagements = 0
         print("Engaged in melee with the following NPCs:")
         for i in range(len(self.adjacent_npcs)):
             if self.adjacent_npcs[i]:
-                engagements += 1
-                print(str(engagements) + ") " + self.npc_list[i].name)
-        if engagements == 0:
+                self.engagements += 1
+                print(str(self.engagements) + ") " + self.npc_list[i].name)
+        if self.engagements == 0:
             print("\tNone")
 
-        choice = input("\nSelect option")
+        choice = input("\nSelect option\n")
+
+    def attack_player(self, npc_name, attack_bonus, damage_die, damage_bonus):
+        """roll an attack against a player from a given NPC"""
+
+        roll = utils.die_roll(20, 1, single_mod=attack_bonus)
+
+        if roll[0] >= self.main_player.AC:
+            print("The " + npc_name + " hits!")
+
+            damage = utils.die_roll(damage_die[0], damage_die[1], single_mod=damage_bonus)[0]
+
+            self.main_player.current_health -= damage
+
+        else:
+            print("The " + npc_name + " misses!")
 
     def __init__(self, _player, npc_list, npc_distances, npc_quantities):
         super().__init__()
@@ -86,8 +104,5 @@ class CombatEncounter():
         self.npc_quantities = npc_quantities
 
         self.setup_combat()
-
-        print(self.turn_order)
-        print(self.non_friendlies)
 
         self.run_combat()
