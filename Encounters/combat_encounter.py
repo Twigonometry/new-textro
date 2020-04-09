@@ -1,6 +1,12 @@
 import utils
 import player
 import npc
+import enum
+
+class CombatState(enum.Enum):
+    ACTIVE = "ACTIVE"
+    VICTORY = "VICTORY"
+    DEFEAT = "DEFEAT"
 
 class CombatEncounter():
     main_player = None
@@ -48,7 +54,8 @@ class CombatEncounter():
 
     def run_combat(self):
         """while there are still enemies present, allow each party in combat to fight in turn"""
-        while len(self.non_friendlies) > 0:
+        player_alive = True
+        while len(self.non_friendlies) > 0 and player_alive:
             player_found = False
             for i in range(len(self.turn_order)):
                 party = self.turn_order[i]
@@ -61,6 +68,12 @@ class CombatEncounter():
                         party.fight(self, i - 1)
                     else:
                         party.fight(self, i)
+                
+                #at end of each turn, check for an end of encounter condition
+                if self.main_player.current_health <= 0:
+                    print("You're dead!")
+                    player_alive = False
+                    break
 
     def player_turn(self):
         """present player with a series of combat options"""
@@ -81,15 +94,17 @@ class CombatEncounter():
 
         choice = input("\nSelect option\n")
 
+        #should have option to attack, retreat, use ability/item
+
     def attack_player(self, npc_name, attack_bonus, damage_die, damage_bonus):
         """roll an attack against a player from a given NPC"""
 
         roll = utils.die_roll(20, 1, single_mod=attack_bonus)
 
         if roll[0] >= self.main_player.AC:
-            print("The " + npc_name + " hits!")
-
             damage = utils.die_roll(damage_die[0], damage_die[1], single_mod=damage_bonus)[0]
+
+            print("The " + npc_name + " hits! You take " + str(damage) + " damage.")
 
             self.main_player.current_health -= damage
 

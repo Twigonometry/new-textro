@@ -105,6 +105,11 @@ class NPC:
         behaviour may include chasing player down, retreating at certain HP etc;
         should generate a dynamic combat story throughout"""
 
+    def victory(self, player):
+        """defines behaviour on achieving victory in combat encounter
+        may consist of killing player, leaving them for dead, or looting them
+        if the NPC is friendly, they may start a dialogue/do nothing"""
+
     def approach_player(self, distance):
         """moves directly towards the player, and returns the new distance"""
         if self.speed >= distance:

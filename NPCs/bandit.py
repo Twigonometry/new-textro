@@ -97,6 +97,19 @@ class Bandit(npc.NPC):
 
             combat_encounter.attack_player(self.name, self.melee_attack_bonus, self.melee_damage_die, self.melee_damage_bonus)
 
+    def victory(self, player, attack_type):
+        return super().victory(player)
+        print("You have been defeated in combat by the bandit!")
+
+        #randomly decide whether to kill the player or loot their body and leave them unconscious
+        choice = utils.randint(1, 7)
+        if choice == 1:
+            print("The bandit knocks you unconscious. You wake up on the floor where they left you, stripped of your clothes, weapons, and gold.")
+        elif attack_type == "melee":
+            print("The last thing you see is the bandit's " + self.melee_weapon_name + " being brought down on your head. You have been killed.")
+        else:
+            print("The bandit's " + self.ranged_weapon_name + " delivers death from afar. You have been killed.")
+
     def alert_close_proximity(self, multiple):
         if multiple:
             print("You are too close to turn away or attempt to hide from the closest bandit, and they attack you on sight!")
